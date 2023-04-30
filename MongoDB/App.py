@@ -119,9 +119,7 @@ class VentanaPrincipal:
         else:
             tk.messagebox.showerror("Error", "No se ha seleccionado un archivo para analizar")
 
-            
-
-                        
+                              
     def guardar_auto(self):
         # Obtener el contenido del área de texto
         texto = self.text1.get("1.0", "end-1c")

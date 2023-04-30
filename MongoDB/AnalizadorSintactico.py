@@ -1,4 +1,4 @@
-from Token import Token
+from AnalizadorLexico import AnalizadorLexico
 class CrearBD:
     def __init__(self, nombre_bd):
         self.nombre_bd = nombre_bd
