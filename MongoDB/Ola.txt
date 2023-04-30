@@ -1,0 +1,17 @@
+--- comentario@//   /+++##
+
+CrearBD ejemplo = nueva CrearBD();---creacion de bd
+EliminarBD elimina = nueva EliminarBD("ejemplo");---eliminación de bd
+CrearColeccion colec = nueva CrearColeccion("NombreColeccion");
+EliminarColeccion eliminacolec = nueva EliminarColeccion("NombreColeccion");
+InsertarUnico insertadoc = nueva InsertarUnico("NombreColeccion","{"nombre":"Obra Literaria","autor":"Jorge Luis"}");
+EliminarUnico eliminadoc = nueva EliminarUnico("NombreColeccion","{"nombre":"Obra Literaria"}");
+BuscarTodo todo = nueva BuscarTodo ("NombreColeccion");
+BuscarUnico todo = nueva BuscarUnico ("NombreColeccion");
+ActualizarUnico actualizadoc = nueva ActualizarUnico("NombreColeccion",
+"{
+    "nombre" : "Obra Literaria"
+},
+{
+    $set: {"autor" : "Mario Vargas"}
+}");
