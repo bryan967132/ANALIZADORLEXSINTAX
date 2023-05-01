@@ -1,4 +1,4 @@
-from AnalizadorLexico import AnalizadorLexico
+from Token import Token
 class CrearBD:
     def __init__(self, nombre_bd):
         self.nombre_bd = nombre_bd
@@ -49,180 +49,186 @@ class BuscarUnico:
         self.filtro = filtro
         print(f"Se buscó el registro en la colección {self.nombre_coleccion} que cumple el filtro {self.filtro}")
 
-sentencias = [
-    'CrearBD("ejemplo");',
-    'EliminarBD("elimina");',
-    'colec = CrearColeccion("NombreColeccion");',
-    'eliminacolec = EliminarColeccion("NombreColeccion");',
-    'insertadoc = InsertarUnico("NombreColeccion" ,"{\\"nombre\\": \\"Obra Literaria\\", \\"autor\\": \\"Jorge Luis\\"}");',
-    'actualizadoc = ActualizarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}", "{$set: {\\"autor\\": \\"Mario Vargas\\"}}");',
-    'eliminadoc = EliminarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}");',
-    'todo = BuscarTodo("NombreColeccion");',
-    'unico = BuscarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}");'
-]
+# sentencias = [
+#     'CrearBD("ejemplo");',
+#     'EliminarBD("elimina");',
+#     'colec = CrearColeccion("NombreColeccion");',
+#     'eliminacolec = EliminarColeccion("NombreColeccion");',
+#     'insertadoc = InsertarUnico("NombreColeccion" ,"{\\"nombre\\": \\"Obra Literaria\\", \\"autor\\": \\"Jorge Luis\\"}");',
+#     'actualizadoc = ActualizarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}", "{$set: {\\"autor\\": \\"Mario Vargas\\"}}");',
+#     'eliminadoc = EliminarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}");',
+#     'todo = BuscarTodo("NombreColeccion");',
+#     'unico = BuscarUnico("NombreColeccion", "{\\"nombre\\": \\"Obra Literaria\\"}");'
+# ]
 
-for sentencia in sentencias:
-    exec(sentencia[:-1])
-for sentencia in sentencias:
-    tokens = sentencia.split()
-    if tokens[0] == 'CrearBD':
-        identificador = tokens[1].replace(";", "")
-        instancia = CrearBD()
-    elif tokens[0] == 'EliminarBD':
-        identificador = tokens[1].replace(";", "")
-        instancia = EliminarBD()
-    elif tokens[0] == 'CrearColeccion':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
-        instancia = CrearColeccion(parametro)
-    elif tokens[0] == 'EliminarColeccion':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
-        instancia = EliminarColeccion(parametro)
-    elif tokens[0] == 'InsertarUnico':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
-        instancia = InsertarUnico(parametros[0], parametros[1])
-    elif tokens[0] == 'ActualizarUnico':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
-        instancia = ActualizarUnico(parametros[0], parametros[1], parametros[2])
-    elif tokens[0] == 'EliminarUnico':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
-        instancia = EliminarUnico(parametros[0], parametros[1])
-    elif tokens[0] == 'BuscarTodo':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
-        instancia = BuscarTodo(parametro)
-    elif tokens[0] == 'BuscarUnico':
-        identificador = tokens[2].replace("=", "").replace(";", "")
-        parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
-        instancia = BuscarUnico(parametros[0], parametros[1])
-    else:
-        print("Sentencia no reconocida")
+# for sentencia in sentencias:
+#     exec(sentencia[:-1])
+# for sentencia in sentencias:
+#     tokens = sentencia.split()
+#     if tokens[0] == 'CrearBD':
+#         identificador = tokens[1].replace(";", "")
+#         instancia = CrearBD()
+#     elif tokens[0] == 'EliminarBD':
+#         identificador = tokens[1].replace(";", "")
+#         instancia = EliminarBD()
+#     elif tokens[0] == 'CrearColeccion':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
+#         instancia = CrearColeccion(parametro)
+#     elif tokens[0] == 'EliminarColeccion':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
+#         instancia = EliminarColeccion(parametro)
+#     elif tokens[0] == 'InsertarUnico':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
+#         instancia = InsertarUnico(parametros[0], parametros[1])
+#     elif tokens[0] == 'ActualizarUnico':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
+#         instancia = ActualizarUnico(parametros[0], parametros[1], parametros[2])
+#     elif tokens[0] == 'EliminarUnico':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
+#         instancia = EliminarUnico(parametros[0], parametros[1])
+#     elif tokens[0] == 'BuscarTodo':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametro = tokens[5].replace("(", "").replace(")", "").replace('"', '')
+#         instancia = BuscarTodo(parametro)
+#     elif tokens[0] == 'BuscarUnico':
+#         identificador = tokens[2].replace("=", "").replace(";", "")
+#         parametros = tokens[5].replace("(", "").replace(")", "").replace('"', '').split(",")
+#         instancia = BuscarUnico(parametros[0], parametros[1])
+#     else:
+#         print("Sentencia no reconocida")
 class Parser:
     def __init__(self, tokens):
         self.tokens = tokens
-        self.current_token = None
+        self.current_token: Token = None
         self.token_index = -1
         self.advance()
 
     def advance(self):
-        self.token_index += 1
-        if self.token_index < len(self.tokens):
+        try:
+            self.token_index += 1
             self.current_token = self.tokens[self.token_index]
+        except:
+            self.current_token = None
 
     def parse(self):
-        if self.current_token.tipo == 'CREAR_BD':
+        if not self.current_token:
+            print('EOF')
+            return
+        if self.current_token.tipo == 'CREARBD':
             self.advance()
             if self.current_token.tipo == 'IDENTIFICADOR':
-                nombre_bd = self.current_token.valor
+                nombre_bd = self.current_token.buffer
                 self.advance()
                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                     self.advance()
-                    return CrearBD(nombre_bd)
-        elif self.current_token.tipo == 'ELIMINAR_BD':
+                    CrearBD(nombre_bd)
+        elif self.current_token.tipo == 'ELIMINARBD':
             self.advance()
             if self.current_token.tipo == 'IDENTIFICADOR':
-                nombre_bd = self.current_token.valor
+                nombre_bd = self.current_token.buffer
                 self.advance()
                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                     self.advance()
-                    return EliminarBD(nombre_bd)
-        elif self.current_token.tipo == 'CREAR_COLECCION':
+                    EliminarBD(nombre_bd)
+        elif self.current_token.tipo == 'CREARCOLECCION':
             self.advance()
             if self.current_token.tipo == 'IDENTIFICADOR':
-                nombre_coleccion = self.current_token.valor
+                nombre_coleccion = self.current_token.buffer
                 self.advance()
                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                     self.advance()
-                    return CrearColeccion(nombre_coleccion)
-        elif self.current_token.tipo == 'ELIMINAR_COLECCION':
+                    CrearColeccion(nombre_coleccion)
+        elif self.current_token.tipo == 'ELIMINARCOLECCION':
             self.advance()
             if self.current_token.tipo == 'IDENTIFICADOR':
-                nombre_coleccion = self.current_token.valor
+                nombre_coleccion = self.current_token.buffer
                 self.advance()
                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                     self.advance()
-                    return EliminarColeccion(nombre_coleccion)
-        elif self.current_token.tipo == 'INSERTAR_UNICO':
+                    EliminarColeccion(nombre_coleccion)
+        elif self.current_token.tipo == 'INSERTARUNICO':
             self.advance()
             if self.current_token.tipo == 'PARENTESIS_IZQUIERDO':
                 self.advance()
                 if self.current_token.tipo == 'IDENTIFICADOR':
-                    nombre_coleccion = self.current_token.valor
+                    nombre_coleccion = self.current_token.buffer
                     self.advance()
                     if self.current_token.tipo == 'COMA':
                         self.advance()
                         if self.current_token.tipo == 'CADENA':
-                            document = self.current_token.valor
+                            document = self.current_token.buffer
                             self.advance()
                             if self.current_token.tipo == 'PARENTESIS_DERECHO':
                                 self.advance()
                                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                                     self.advance()
-                                    return InsertarUnico(nombre_coleccion, document)
-        elif self.current_token.tipo == 'ACTUALIZAR_UNICO':
+                                    InsertarUnico(nombre_coleccion, document)
+        elif self.current_token.tipo == 'ACTUALIZARUNICO':
             self.advance()
             if self.current_token.tipo == 'PARENTESIS_IZQUIERDO':
                 self.advance()
                 if self.current_token.tipo == 'IDENTIFICADOR':
-                    nombre_coleccion = self.current_token.valor
+                    nombre_coleccion = self.current_token.buffer
                     self.advance()
                     if self.current_token.tipo == 'COMA':
                         self.advance()
                         if self.current_token.tipo == 'CADENA':
-                            filtro = self.current_token.valor
+                            filtro = self.current_token.buffer
                             self.advance()
                             if self.current_token.tipo == 'COMA':
                                 self.advance()
                                 if self.current_token.tipo == 'CADENA':
-                                    update = self.current_token.valor
+                                    update = self.current_token.buffer
                                     self.advance()
                                     if self.current_token.tipo == 'PARENTESIS_DERECHO':
                                         self.advance()
                                         if self.current_token.tipo == 'PUNTO_Y_COMA':
                                             self.advance()
-                                            return ActualizarUnico(nombre_coleccion, filtro, update)
-        elif self.current_token.tipo == 'ELIMINAR_UNICO':
+                                            ActualizarUnico(nombre_coleccion, filtro, update)
+        elif self.current_token.tipo == 'ELIMINARUNICO':
             self.advance()
             if self.current_token.tipo == 'PARENTESIS_IZQUIERDO':
                 self.advance()
                 if self.current_token.tipo == 'IDENTIFICADOR':
-                    nombre_coleccion = self.current_token.valor
+                    nombre_coleccion = self.current_token.buffer
                     self.advance()
                     if self.current_token.tipo == 'COMA':
                         self.advance()
                         if self.current_token.tipo == 'CADENA':
-                            filtro = self.current_token.valor
+                            filtro = self.current_token.buffer
                             self.advance()
                             if self.current_token.tipo == 'PARENTESIS_DERECHO':
                                 self.advance()
                                 if self.current_token.tipo == 'PUNTO_Y_COMA':
                                     self.advance()
-                                    return EliminarUnico(nombre_coleccion, filtro)
-        elif self.current_token.tipo == 'BUSCAR_TODO':
+                                    EliminarUnico(nombre_coleccion, filtro)
+        elif self.current_token.tipo == 'BUSCARTODO':
             self.advance()
             if self.current_token.tipo == 'PARENTESIS_IZQUIERDO':
                 self.advance()
                 if self.current_token.tipo == 'IDENTIFICADOR':
-                    nombre_coleccion = self.current_token.valor
+                    nombre_coleccion = self.current_token.buffer
                     self.advance()
                     if self.current_token.tipo == 'PARENTESIS_DERECHO':
                         self.advance()
                         if self.current_token.tipo == 'PUNTO_Y_COMA':
                             self.advance()
-                            return BuscarTodo(nombre_coleccion)
-        elif self.current_token.tipo == 'BUSCAR_UNICO':
+                            BuscarTodo(nombre_coleccion)
+        elif self.current_token.tipo == 'BUSCARUNICO':
             self.advance()
             if self.current_token.tipo == 'PARENTESIS_IZQUIERDO':
                 self.advance()
                 if self.current_token.tipo == 'IDENTIFICADOR':
-                    nombre_coleccion = self.current_token.valor
+                    nombre_coleccion = self.current_token.buffer
                     self.advance()
                     if self.current_token.tipo == 'PARENTESIS_DERECHO':
                         self.advance()
                         if self.current_token.tipo == 'PUNTO_Y_COMA':
                             self.advance()
-                            return BuscarUnico(nombre_coleccion)
+                            BuscarUnico(nombre_coleccion)
+        # self.parse() # (comentado temporalmente) llamada recursiva para ejecutar el resto de comandos
